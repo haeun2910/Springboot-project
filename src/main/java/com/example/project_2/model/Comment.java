@@ -17,7 +17,7 @@ public class Comment {
 
 
     @ManyToOne
-    @JoinColumn(name = "article-id")
+    @JoinColumn(name = "article_id")
     private Article article;
 
     public Comment(String content, String password, Article article) {
