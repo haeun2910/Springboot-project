@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Delete Comment</title>
+    <title>Confirm Delete</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #f4f4f4;
             margin: 0;
             padding: 0;
@@ -16,45 +16,45 @@
 
         .container {
             background-color: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            max-width: 500px;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
             width: 100%;
             text-align: center;
         }
 
         h1 {
             color: #e74c3c;
+            font-size: 24px;
             margin-bottom: 20px;
         }
 
         p {
-            color: #555;
-            margin-bottom: 20px;
-        }
-
-        form {
+            font-size: 16px;
+            color: #666;
             margin-bottom: 20px;
         }
 
         input[type="password"] {
             width: 100%;
-            padding: 10px;
+            padding: 12px;
+            margin-bottom: 20px;
             border: 1px solid #ccc;
             border-radius: 5px;
-            margin-bottom: 20px;
+            font-size: 16px;
         }
 
         button {
             background-color: #e74c3c;
             color: #fff;
-            padding: 10px 15px;
+            padding: 12px 25px;
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            width: 100%;
             font-size: 16px;
+            transition: background-color 0.3s ease;
+            width: 100%;
         }
 
         button:hover {
@@ -66,24 +66,35 @@
             margin-top: 20px;
             color: #3498db;
             text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s ease;
         }
 
         .back-link:hover {
+            color: #2980b9;
             text-decoration: underline;
+        }
+
+        .container::before {
+            content: "";
+            display: block;
+            width: 50px;
+            height: 4px;
+            background-color: #e74c3c;
+            margin: 0 auto 20px;
+            border-radius: 2px;
         }
     </style>
 </head>
 <body>
 <div class="container">
-    <h1>Confirm Deletion</h1>
-    <p>Are you sure you want to delete this comment?</p>
-    <form th:action="@{/comments/{commentId}/delete(commentId=${comment.id})}" method="post">
-        <div>
-            <input type="password" name="password" placeholder="Enter your password" required>
-        </div>
-        <button type="submit">Delete Comment</button>
+    <h1>Confirm Delete</h1>
+    <p>Please enter your password to confirm the deletion.</p>
+    <form th:action="@{/boards/{boardId}/articles/{articleId}/comments/{commentId}/confirm-delete(boardId=${boardId}, articleId=${articleId}, commentId=${commentId})}" method="post">
+        <input type="password" name="password" placeholder="Password" required>
+        <button type="submit">Confirm Delete</button>
     </form>
-    <a th:href="@{/articles/{articleId}(articleId=${comment.article.id})}" class="back-link">Cancel</a>
+    <a th:href="@{/boards/{boardId}/articles/{articleId}/read(boardId=${boardId}, articleId=${articleId})}" class="back-link">Cancel</a>
 </div>
 </body>
 </html>

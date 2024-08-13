@@ -4,8 +4,8 @@
     <title>Update Article</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+            font-family: 'Roboto', sans-serif;
+            background-color: #f0f2f5;
             margin: 0;
             padding: 0;
             display: flex;
@@ -15,69 +15,93 @@
         }
 
         .container {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            max-width: 500px;
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
             width: 100%;
+            transition: transform 0.3s ease;
+        }
+
+        .container:hover {
+            transform: translateY(-5px);
         }
 
         h1 {
             color: #333;
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: 1px;
         }
 
         form div {
-            margin-bottom: 15px;
+            margin-bottom: 20px;
         }
 
         label {
-            font-weight: bold;
+            font-weight: 600;
             display: block;
-            margin-bottom: 5px;
+            margin-bottom: 8px;
+            color: #555;
         }
 
         input[type="text"],
         input[type="password"],
         textarea {
             width: 100%;
-            padding: 10px;
+            padding: 12px;
             border: 1px solid #ccc;
-            border-radius: 5px;
+            border-radius: 8px;
             box-sizing: border-box;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+
+        input[type="text"]:focus,
+        input[type="password"]:focus,
+        textarea:focus {
+            border-color: #3498db;
+            outline: none;
         }
 
         textarea {
             resize: vertical;
-            min-height: 100px;
+            min-height: 120px;
         }
 
         button {
             background-color: #3498db;
             color: #fff;
-            padding: 10px 15px;
+            padding: 12px 20px;
             border: none;
-            border-radius: 5px;
+            border-radius: 8px;
             cursor: pointer;
             width: 100%;
-            font-size: 16px;
+            font-size: 18px;
+            font-weight: 600;
+            transition: background-color 0.3s ease, transform 0.3s ease;
         }
 
         button:hover {
             background-color: #2980b9;
+            transform: translateY(-3px);
         }
 
         .back-link {
             display: block;
             text-align: center;
-            margin-top: 20px;
+            margin-top: 25px;
             color: #3498db;
             text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease;
         }
 
         .back-link:hover {
+            color: #2980b9;
             text-decoration: underline;
         }
     </style>
@@ -87,9 +111,7 @@
     <h1>Update Article</h1>
 
     <form th:action="@{/boards/articles/{articleId}/update(articleId=${article.id})}" method="post">
-
-
-    <div>
+        <div>
             <label for="title">Title:</label>
             <input type="text" id="title" name="title" th:value="${article.title}" required>
         </div>
@@ -106,28 +128,7 @@
         </div>
     </form>
 
-    <a th:href="@{/articles/{articleId}(articleId=${article.id})}" class="back-link">Back to Article</a>
-
+    <a th:href="@{/boards/{boardId}/articles/{articleId}/read(boardId=${article.board.id}, articleId=${article.id})}" class="back-link">Back to Article</a>
 </div>
-
-<script>
-    function validateForm() {
-        const title = document.getElementById('title').value.trim();
-        const content = document.getElementById('content').value.trim();
-        const password = document.getElementById('password').value.trim();
-
-        if (!title || !content || !password) {
-            alert("Please fill out all fields before submitting.");
-            return false;
-        }
-
-        if (password.length < 4) {
-            alert("Password must be at least 4 characters long.");
-            return false;
-        }
-
-        return true;
-    }
-</script>
 </body>
 </html>

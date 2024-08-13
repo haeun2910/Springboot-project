@@ -4,49 +4,73 @@
     <title>Comments</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f2f5;
             margin: 0;
             padding: 0;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
+            color: #333;
         }
 
         .container {
             background-color: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
             max-width: 800px;
             width: 100%;
         }
 
         h1 {
-            color: #333;
+            color: #444;
             text-align: center;
-            margin-bottom: 20px;
+            font-size: 28px;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #ddd;
+            padding-bottom: 10px;
+        }
+
+        .article-section {
+            margin-bottom: 30px;
+        }
+
+        .article-title {
+            font-size: 26px;
+            color: #333;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .article-content {
+            font-size: 18px;
+            color: #555;
+            line-height: 1.6;
         }
 
         ul {
             list-style-type: none;
             padding: 0;
+            margin: 0;
         }
 
         li {
             background-color: #f9f9f9;
-            margin-bottom: 10px;
-            padding: 10px;
-            border-radius: 5px;
-            transition: background-color 0.3s;
+            margin-bottom: 12px;
+            padding: 15px;
+            border-radius: 8px;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
         }
 
         li:hover {
             background-color: #e9e9e9;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
         .comment-content {
@@ -60,12 +84,13 @@
         }
 
         .action-button {
-            padding: 5px 10px;
+            padding: 8px 15px;
             border-radius: 5px;
             text-decoration: none;
             color: #fff;
             font-weight: bold;
             cursor: pointer;
+            transition: background-color 0.3s ease;
         }
 
         .delete-button {
@@ -78,15 +103,16 @@
 
         .new-comment-link {
             display: block;
-            margin-top: 20px;
+            margin: 30px auto 0 auto;
             text-align: center;
             background-color: #2ecc71;
             color: #fff;
-            padding: 10px;
-            border-radius: 5px;
+            padding: 12px;
+            border-radius: 8px;
             text-decoration: none;
             font-weight: bold;
-            transition: background-color 0.3s;
+            max-width: 200px;
+            transition: background-color 0.3s ease;
         }
 
         .new-comment-link:hover {
@@ -100,38 +126,43 @@
             color: #3498db;
             text-decoration: none;
             font-weight: bold;
+            transition: color 0.3s ease;
         }
 
         .back-link:hover {
+            color: #2980b9;
             text-decoration: underline;
+        }
+
+        .container::before {
+            content: "";
+            display: block;
+            width: 60px;
+            height: 4px;
+            background-color: #3498db;
+            margin: 0 auto 20px auto;
+            border-radius: 2px;
         }
     </style>
 </head>
 <body>
 <div class="container">
-    <h1>Comments</h1>
+    <h1>[[${article.title}]] Comments</h1>
+
+    <div class="article-section">
+        <div class="article-title" th:text="${article.title}">Article Title</div>
+        <div class="article-content" th:text="${article.content}">Sample article content goes here...</div>
+    </div>
+
     <ul>
         <li th:each="comment : ${comments}">
             <div class="comment-content" th:text="${comment.content}">Sample Comment Content</div>
-            <div class="action-buttons">
-                <button class="delete-button" onclick="confirmDelete([[${comment.id}]])">Delete</button>
-            </div>
+            <a th:href="@{/boards/{boardId}/articles/{articleId}/comments/{commentId}/delete (boardId=${article.board.id}, articleId=${article.id}, commentId=${comment.id})}" class="action-button delete-button">Delete</a>
         </li>
     </ul>
-    <a href="#" class="new-comment-link" onclick="showCommentForm()">Add Comment</a>
-    <a th:href="@{/articles/{articleId}(articleId=${article.id})}" class="back-link">Back to Article</a>
+
+    <a href="comments/create" class="new-comment-link">Add Comment</a>
+    <a th:href="@{/boards/{boardId}(boardId=${article.board.id})}" class="back-link">Back to Board</a>
 </div>
-
-<script>
-    function confirmDelete(commentId) {
-        if (confirm('Are you sure you want to delete this comment?')) {
-            window.location.href = '/comments/' + commentId + '/delete';
-        }
-    }
-
-    function showCommentForm() {
-        window.location.href = '/comments/create?articleId=' + [[${article.id}]];
-    }
-</script>
 </body>
 </html>

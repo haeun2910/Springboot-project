@@ -84,8 +84,8 @@
 <body>
 <div class="container">
     <h1>Create Comment</h1>
-    <form th:action="@{/comments/create}" method="post">
-        <input type="hidden" name="articleId" th:value="${articleId}">
+
+    <form th:action="@{/boards/{boardId}/articles/{articleId}/comments/create(articleId=${article.id}, boardId=${article.board.id})}" method="post">
         <div>
             <label for="content">Comment:</label>
             <textarea id="content" name="content" required></textarea>
@@ -98,7 +98,8 @@
             <button type="submit">Submit</button>
         </div>
     </form>
-    <a th:href="@{/articles/{articleId}(articleId=${articleId})}" class="back-link">Back to Article</a>
+
+    <a th:href="@{/boards/{boardId}/articles/{articleId}/read(articleId=${article.id}, boardId=${article.board.id})}" class="back-link">Back to Comments</a>
 </div>
 </body>
 </html>

@@ -1,5 +1,6 @@
 package com.example.project_2.controller;
 
+import com.example.project_2.model.Article;
 import com.example.project_2.model.Comment;
 import com.example.project_2.service.ArticleService;
 import com.example.project_2.service.BoardService;
@@ -12,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
-@RequestMapping("comments")
+@RequestMapping("boards/{boardId}/articles")
 public class CommentController {
     private final CommentService commentService;
     private final ArticleService articleService;
@@ -22,25 +23,65 @@ public class CommentController {
         this.articleService = articleService;
         this.boardService = boardService;
     }
-
-    @PostMapping("/create")
-    public String createComment(@RequestParam Long articleId, @RequestParam String content, @RequestParam String password) {
-        commentService.createComment(articleId, content, password);
-        return "redirect:/articles/" + articleId;
-    }
-
-    @GetMapping("/{articleId}")
+    @GetMapping("/{articleId}/read")
     public String getCommentsByArticle(@PathVariable Long articleId, Model model) {
+        Article article = articleService.getArticleById(articleId);
+        if (article == null) {
+            return "error";
+        }
         List<Comment> comments = commentService.getCommentsByArticleId(articleId);
         model.addAttribute("comments", comments);
-        return "comments/comment-list";
+        model.addAttribute("article", article);
+        return "comments/comments";
+    }
+    @GetMapping("{articleId}/comments/create")
+    public String createCommentForm(@PathVariable("articleId") Long articleId, Model model) {
+        // Fetch the article to associate with the comment
+        Article article = articleService.getArticleById(articleId);
+        if (article == null) {
+            return "error"; // Handle the case where the article is not found
+        }
+        Comment comment = new Comment();
+        model.addAttribute("comment", comment);
+        model.addAttribute("article", article);
+
+        return "comments/create-comment"; // This is the HTML view for creating a comment
+    }
+    @PostMapping("/{articleId}/comments/create")
+    public String createComment(@PathVariable("articleId") Long articleId,
+                                @RequestParam("content") String content,
+                                @RequestParam("password") String password) {
+        commentService.createComment(articleId, content, password);
+        return "redirect:/boards/{boardId}/articles/" + articleId + "/read";
+    }
+    @GetMapping("/{articleId}/comments/{commentId}/delete")
+    public String showDeleteConfirmation(@PathVariable("commentId") Long commentId,
+                                         @PathVariable("boardId") Long boardId,
+                                         @PathVariable("articleId") Long articleId,
+                                         Model model) {
+        model.addAttribute("commentId", commentId);
+        model.addAttribute("articleId", articleId);
+        model.addAttribute("boardId", boardId);
+        return "comments/confirm-delete";
     }
 
-    @PostMapping("/{commentId}/delete")
-    public String deleteComment(@PathVariable Long commentId, @RequestParam String password) {
-        commentService.deleteComment(commentId, password);
-        return "redirect:/articles/" + commentId; // Redirect to the relevant article or board
+    @PostMapping("/{articleId}/comments/{commentId}/confirm-delete")
+    public String deleteComment(@PathVariable("commentId") Long commentId,
+                                @RequestParam("password") String password,
+                                @PathVariable("boardId") Long boardId,
+                                @PathVariable("articleId") Long articleId,
+                                Model model) {
+        try {
+            commentService.deleteComment(commentId, password);
+            return "redirect:/boards/" + boardId + "/articles/" + articleId + "/read";
+        } catch (RuntimeException e) {
+            model.addAttribute("error", e.getMessage());
+            return "error"; // Display an error page
+        }
     }
-
 }
+
+
+
+
 

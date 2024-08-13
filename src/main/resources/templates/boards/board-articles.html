@@ -4,60 +4,74 @@
     <title>Articles</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f2f5;
             margin: 0;
             padding: 0;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh;
+            color: #333;
         }
 
         .container {
             background-color: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
             max-width: 800px;
             width: 100%;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
         }
 
         h1 {
-            color: #333;
             text-align: center;
-            margin-bottom: 20px;
+            color: #444;
+            margin-bottom: 30px;
+            font-size: 28px;
         }
 
         ul {
             list-style-type: none;
             padding: 0;
+            margin: 0;
         }
 
         li {
             background-color: #f9f9f9;
-            margin-bottom: 10px;
-            padding: 10px;
-            border-radius: 5px;
-            transition: background-color 0.3s;
+            margin-bottom: 15px;
+            padding: 20px;
+            border-radius: 10px;
+            transition: background-color 0.3s, box-shadow 0.3s ease;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
         li:hover {
             background-color: #e9e9e9;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
         }
 
         a.article-link {
             text-decoration: none;
             color: #3498db;
-            font-weight: bold;
-            display: block;
+            font-weight: 600;
+            font-size: 18px;
+            flex-grow: 1;
+            transition: color 0.3s ease;
         }
 
         a.article-link:hover {
-            text-decoration: underline;
+            color: #2c8cd6;
         }
 
         .action-buttons {
@@ -66,16 +80,25 @@
         }
 
         .action-button {
-            padding: 5px 10px;
+            padding: 8px 12px;
             border-radius: 5px;
             text-decoration: none;
             color: #fff;
             font-weight: bold;
             cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .action-button:hover {
+            transform: translateY(-2px);
         }
 
         .update-button {
             background-color: #f1c40f;
+        }
+
+        .update-button:hover {
+            background-color: #d4ac0d;
         }
 
         .delete-button {
@@ -86,78 +109,48 @@
             background-color: #c0392b;
         }
 
-        .update-button:hover {
-            background-color: #d4ac0d;
+        .read-button {
+            background-color: #3498db;
+        }
+
+        .read-button:hover {
+            background-color: #2980b9;
         }
 
         .new-article-link {
             display: block;
-            margin-top: 20px;
+            margin-top: 30px;
             text-align: center;
             background-color: #2ecc71;
             color: #fff;
-            padding: 10px;
-            border-radius: 5px;
+            padding: 15px;
+            border-radius: 10px;
             text-decoration: none;
             font-weight: bold;
-            transition: background-color 0.3s;
+            font-size: 18px;
+            transition: background-color 0.3s, transform 0.3s ease;
         }
 
         .new-article-link:hover {
             background-color: #27ae60;
+            transform: translateY(-3px);
         }
 
-        /* Modal styles */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0, 0, 0, 0.4);
-            justify-content: center;
-            align-items: center;
-        }
-
-        .modal-content {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            width: 300px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        .back-link {
+            display: block;
             text-align: center;
+            margin-top: 30px;
+            color: #3498db;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease;
         }
 
-        .modal-content input[type="password"] {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #ccc;
-            border-radius: 5px;
+        .back-link:hover {
+            color: #2c8cd6;
+            text-decoration: underline;
         }
 
-        .modal-content button {
-            padding: 10px 20px;
-            margin-top: 10px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-
-        .modal-content .confirm-button {
-            background-color: #3498db;
-            color: #fff;
-        }
-
-        .modal-content .cancel-button {
-            background-color: #e74c3c;
-            color: #fff;
-            margin-left: 10px;
-        }
     </style>
 </head>
 <body>
@@ -166,16 +159,17 @@
     <ul>
         <li th:each="article : ${articles}">
             <a th:text="${article.title}" class="article-link">Article Title</a>
-            <a th:href="@{/boards/{boardId}/articles/{articleId}/update (articleId=${article.id}, boardId = ${board.id})}">update</a>
-            <a th:href="@{/boards/{boardId}/articles/{articleId}/delete (articleId=${article.id}, boardId = ${board.id})}">delete</a>
+            <div class="action-buttons">
+                <a th:href="@{/boards/{boardId}/articles/{articleId}/read (articleId=${article.id}, boardId=${board.id})}" class="action-button read-button">Read</a>
+                <a th:href="@{/boards/{boardId}/articles/{articleId}/update (articleId=${article.id}, boardId=${board.id})}" class="action-button update-button">Update</a>
+                <a th:href="@{/boards/{boardId}/articles/{articleId}/delete (articleId=${article.id}, boardId=${board.id})}" class="action-button delete-button">Delete</a>
+            </div>
         </li>
     </ul>
 
     <a href="/boards/articles/create" class="new-article-link">Write New Article</a>
-    <a href="/boards" class="back-link">Back to Board</a>
+    <a href="/boards" class="back-link">Back to Boards</a>
 </div>
-
-
 
 </body>
 </html>

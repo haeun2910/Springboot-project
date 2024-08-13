@@ -1,7 +1,6 @@
 package com.example.project_2.service;
 
 import com.example.project_2.model.Article;
-import com.example.project_2.model.Board;
 import com.example.project_2.model.Comment;
 import com.example.project_2.repo.ArticleRepository;
 import com.example.project_2.repo.BoardRepository;
@@ -22,15 +21,16 @@ public class CommentService {
         this.boardRepository = boardRepository;
     }
 
-    public Comment createComment(Long articleId, String content, String password) {
+    public void createComment(Long articleId, String content, String password) {
         Optional<Article> articleOptional = articleRepository.findById(articleId);
         if (articleOptional.isPresent()) {
             Article article = articleOptional.get();
             Comment comment = new Comment(content, password, article);
-            return commentRepository.save(comment);
+            commentRepository.save(comment);
         } else {
             throw new RuntimeException("Article not found");
         }
+
     }
 
     public List<Comment> getCommentsByArticleId(Long articleId) {
@@ -55,8 +55,5 @@ public class CommentService {
         List<Article> articles = articleRepository.findByBoardId(boardId);
         return commentRepository.findByArticleIdIn(articles.stream().map(Article::getId).toList());
     }
-
-
-
 
 }
