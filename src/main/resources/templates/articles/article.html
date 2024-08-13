@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Article Details</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            width: 100%;
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        p {
+            line-height: 1.6;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            background-color: #f9f9f9;
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        li:hover {
+            background-color: #e9e9e9;
+        }
+
+        .comment-link {
+            text-decoration: none;
+            color: #e74c3c;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .comment-link:hover {
+            text-decoration: underline;
+        }
+
+        textarea, input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+            margin-bottom: 10px;
+        }
+
+        button {
+            background-color: #3498db;
+            color: #fff;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: #3498db;
+            text-decoration: none;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1 th:text="${article.title}">Article Title</h1>
+    <p th:text="${article.content}">Article Content</p>
+
+    <h2>Comments</h2>
+    <ul>
+        <li th:each="comment : ${comments}">
+            <p th:text="${comment.content}">Comment Content</p>
+            <a th:href="@{/articles/{articleId}/comments/{commentId}/delete(articleId=${article.id}, commentId=${comment.id})}"
+               class="comment-link">Delete</a>
+        </li>
+    </ul>
+
+    <h2>Add a Comment</h2>
+    <form th:action="@{/articles/{articleId}/comments(articleId=${article.id})}" method="post">
+        <textarea name="content" placeholder="Write your comment here..." required></textarea>
+        <input type="password" name="password" placeholder="Enter your password" required>
+        <button type="submit">Add Comment</button>
+    </form>
+
+    <a th:href="@{/boards/{boardId}(boardId=${article.board.id})}" class="back-link">Back to Board</a>
+</div>
+</body>
+</html>

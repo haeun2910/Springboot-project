@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Create Article</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .container {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      max-width: 500px;
+      width: 100%;
+    }
+
+    h1 {
+      color: #333;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    form div {
+      margin-bottom: 15px;
+    }
+
+    label {
+      font-weight: bold;
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    input[type="text"],
+    input[type="password"],
+    textarea {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      box-sizing: border-box;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    button {
+      background-color: #3498db;
+      color: #fff;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      width: 100%;
+      font-size: 16px;
+    }
+
+    button:hover {
+      background-color: #2980b9;
+    }
+
+    .back-link {
+      display: block;
+      text-align: center;
+      margin-top: 20px;
+      color: #3498db;
+      text-decoration: none;
+    }
+
+    .back-link:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>Create a New Article</h1>
+
+  <form th:action="@{/boards/articles/create}" method="post" onsubmit="return validateForm()">
+    <div>
+      <label for="title">Title:</label>
+      <input type="text" id="title" name="title" required>
+    </div>
+    <div>
+      <label for="content">Content:</label>
+      <textarea id="content" name="content" required></textarea>
+    </div>
+    <div>
+      <label for="password">Password:</label>
+      <input type="password" id="password" name="password" required>
+    </div>
+    <div>
+      <label for="board-select">Board:</label>
+      <select name="board-id" id="board-select">
+        <option value="">Select A Board</option>
+        <option th:each="board: ${boards}"
+                th:value="${board.id}"
+                th:text="${board.name}"
+        ></option>
+      </select>
+    </div>
+    <div>
+      <button type="submit">Submit</button>
+    </div>
+  </form>
+
+  <a th:href="@{/boards}" class="back-link">Back to Boards</a>
+</div>
+
+<script>
+  function validateForm() {
+    const title = document.getElementById('title').value.trim();
+    const content = document.getElementById('content').value.trim();
+    const password = document.getElementById('password').value.trim();
+
+    if (!title || !content || !password) {
+      alert("Please fill out all fields before submitting.");
+      return false;
+    }
+
+    if (password.length < 4) {
+      alert("Password must be at least 4 characters long.");
+      return false;
+    }
+
+    return true;
+  }
+</script>
+</body>
+</html>
