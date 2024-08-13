@@ -76,7 +76,7 @@ public class CommentController {
             return "redirect:/boards/" + boardId + "/articles/" + articleId + "/read";
         } catch (RuntimeException e) {
             model.addAttribute("error", e.getMessage());
-            return "error"; // Display an error page
+            return "comments/confirm-delete"; // Display an error page
         }
     }
 }

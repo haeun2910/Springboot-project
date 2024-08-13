@@ -71,8 +71,21 @@ public class ArticleController {
 
         // Verify the password
         if (!articleService.verifyPassword(articleId, password)) {
+            // Fetch the article to repopulate the form
+            Article article = articleService.getArticleById(articleId);
+            if (article == null) {
+                return "error"; // Handle the case where the article doesn't exist
+            }
+
+            // Fetch the boardId to return to the correct board
+            Long boardId = articleService.getBoardIdByArticleId(articleId);
+
+            // Add necessary attributes back to the model
             model.addAttribute("error", "Incorrect password");
-            return "error"; // This should be a valid error page in your setup
+            model.addAttribute("article", article);
+            model.addAttribute("boardId", boardId);
+
+            return "articles/update-article"; // Return the same update form with an error
         }
 
         // Perform the update
