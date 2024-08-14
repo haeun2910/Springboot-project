@@ -3,14 +3,13 @@
 <head>
     <title>Articles</title>
     <style>
-        /* Basic Reset */
+        /* Reset and Basic Styling */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
-        /* Body Styling */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #eef2f7;
@@ -24,10 +23,10 @@
 
         /* Container Styling */
         .container {
-            background-color: #fff;
+            background-color: #ffffff;
             padding: 40px;
             border-radius: 15px;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
             max-width: 900px;
             width: 100%;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -35,7 +34,7 @@
 
         .container:hover {
             transform: translateY(-5px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
         }
 
         /* Title Styling */
@@ -61,35 +60,48 @@
 
         .search-form input[type="text"] {
             flex-grow: 1;
-            padding: 10px;
+            padding: 12px;
             font-size: 16px;
             border: 1px solid #ddd;
             border-radius: 5px;
             margin-right: 10px;
+            transition: border-color 0.3s ease;
+        }
+
+        .search-form input[type="text"]:focus {
+            border-color: #3498db;
+            outline: none;
         }
 
         .search-form select {
-            padding: 10px;
+            padding: 12px;
             font-size: 16px;
             border: 1px solid #ddd;
             border-radius: 5px;
             margin-right: 10px;
             background-color: #fff;
+            transition: border-color 0.3s ease;
+        }
+
+        .search-form select:focus {
+            border-color: #3498db;
+            outline: none;
         }
 
         .search-form button {
-            padding: 10px 20px;
+            padding: 12px 20px;
             font-size: 16px;
             background-color: #3498db;
             color: #fff;
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            transition: background-color 0.3s ease;
+            transition: background-color 0.3s ease, transform 0.3s ease;
         }
 
         .search-form button:hover {
             background-color: #2980b9;
+            transform: translateY(-2px);
         }
 
         /* List Styling */
@@ -108,12 +120,12 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
         }
 
         li:hover {
             background-color: #f1f1f1;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 8px 18px rgba(0, 0, 0, 0.1);
         }
 
         .article-details {
@@ -232,6 +244,7 @@
         <button type="submit">Search</button>
     </form>
 
+    <a th:href="@{/boards/articles/create(boardId=${board.id})}" class="new-article-link">Write New Article</a>
     <ul>
         <li th:each="article : ${articles}">
             <div class="article-details">
@@ -246,7 +259,6 @@
         </li>
     </ul>
 
-    <a th:href="@{/boards/articles/create(boardId=${board.id})}" class="new-article-link">Write New Article</a>
     <a th:href="@{/boards}" class="back-link">Back to Boards</a>
 </div>
 

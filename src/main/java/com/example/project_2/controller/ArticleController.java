@@ -52,7 +52,7 @@ public class ArticleController {
             ){
         model.addAttribute("boardId", boardId);
 //        List<String> hashtagList = Arrays.asList(hashtags.split(",\\s*"));
-        Article created = articleService.createArticle(boardId,title, content, password);
+        articleService.createArticle(boardId,title, content, password);
 
 
         return "redirect:/boards/" + boardId ;
