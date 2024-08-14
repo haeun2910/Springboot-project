@@ -96,12 +96,40 @@
         .back-link:hover {
             text-decoration: underline;
         }
+
+        .navigation-links {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .navigation-links a {
+            text-decoration: none;
+            color: #3498db;
+            font-weight: bold;
+        }
+
+        .navigation-links a:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
 <div class="container">
     <h1 th:text="${article.title}">Article Title</h1>
     <p th:text="${article.content}">Article Content</p>
+
+    <div class="navigation-links">
+        <a th:if="${previousArticle != null}"
+           th:href="@{/boards/{boardId}/articles/{articleId}/read(boardId=${previousArticle.board.id}, articleId=${previousArticle.id})}">
+            Previous
+        </a>
+
+        <a th:if="${nextArticle != null}"
+           th:href="@{/boards/{boardId}/articles/{articleId}/read(boardId=${nextArticle.board.id}, articleId=${nextArticle.id})}">
+            Next
+        </a>
+    </div>
 
     <h2>Comments</h2>
     <ul>

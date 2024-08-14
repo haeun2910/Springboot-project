@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Comments</title>
+    <title>Article Detail</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -48,6 +48,12 @@
             font-size: 18px;
             color: #555;
             line-height: 1.6;
+        }
+
+        .comment-meta {
+            font-size: 12px;
+            color: #888;
+            margin-top: 5px;
         }
 
         ul {
@@ -143,20 +149,56 @@
             margin: 0 auto 20px auto;
             border-radius: 2px;
         }
+
+        .navigation-links {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .navigation-links a {
+            text-decoration: none;
+            color: #3498db;
+            font-weight: bold;
+        }
+
+        .navigation-links a:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
 <div class="container">
-    <h1>[[${article.title}]] Comments</h1>
-
+    <h1 th:text="${article.title}">Article Title</h1>
     <div class="article-section">
         <div class="article-title" th:text="${article.title}">Article Title</div>
         <div class="article-content" th:text="${article.content}">Sample article content goes here...</div>
+        <div class="comment-meta">
+            <strong>Article ID:</strong> <span th:text="${article.id}">1</span>
+        </div>
     </div>
 
+
+    <div class="navigation-links">
+        <a th:if="${previousArticle != null}"
+           th:href="@{/boards/{boardId}/articles/{articleId}/read(boardId=${previousArticle.board.id}, articleId=${previousArticle.id})}">
+            Previous
+        </a>
+        <a th:if="${nextArticle != null}"
+           th:href="@{/boards/{boardId}/articles/{articleId}/read(boardId=${nextArticle.board.id}, articleId=${nextArticle.id})}">
+            Next
+        </a>
+    </div>
+
+    <h2>Comments</h2>
     <ul>
         <li th:each="comment : ${comments}">
-            <div class="comment-content" th:text="${comment.content}">Sample Comment Content</div>
+            <div>
+                <div class="comment-content" th:text="${comment.content}">Sample Comment Content</div>
+                <div class="comment-meta">
+                    <strong>Comment ID:</strong> <span th:text="${comment.id}">1</span>
+                </div>
+            </div>
             <a th:href="@{/boards/{boardId}/articles/{articleId}/comments/{commentId}/delete (boardId=${article.board.id}, articleId=${article.id}, commentId=${comment.id})}" class="action-button delete-button">Delete</a>
         </li>
     </ul>

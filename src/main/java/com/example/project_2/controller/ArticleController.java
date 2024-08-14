@@ -8,6 +8,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+
 @Controller
 @RequestMapping("/boards")
 public class ArticleController {
@@ -42,9 +47,11 @@ public class ArticleController {
             String content,
             @RequestParam("password")
             String password,
+//            @RequestParam("hashtags") String hashtags,
             Model model
             ){
         model.addAttribute("boardId", boardId);
+//        List<String> hashtagList = Arrays.asList(hashtags.split(",\\s*"));
         Article created = articleService.createArticle(boardId,title, content, password);
 
 
@@ -119,6 +126,28 @@ public class ArticleController {
             model.addAttribute("error", "Incorrect password");
             return "articles/confirm-delete"; // Redirect back to the confirmation page with an error
         }
+    }
+
+
+    @GetMapping("/{boardId}/search")
+    public String searchArticles(
+            @PathVariable(required = false) Long boardId,
+            @RequestParam String query,
+            @RequestParam String criteria,
+            Model model) {
+
+        List<Article> articles;
+        if ("title".equalsIgnoreCase(criteria)) {
+            articles = articleService.searchByTitle(boardId, query);
+        } else if ("content".equalsIgnoreCase(criteria)) {
+            articles = articleService.searchByContent(boardId, query);
+        } else {
+            articles = new ArrayList<>();
+        }
+
+        model.addAttribute("board", boardService.readBoard(boardId));
+        model.addAttribute("articles", articles);
+        return "boards/board-articles"; // Update with your actual view template
     }
 
 

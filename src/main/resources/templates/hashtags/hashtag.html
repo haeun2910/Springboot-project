@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Article Detail</title>
+    <!-- 스타일은 이전 예시 코드에서 추가 -->
+</head>
+<body>
+<div class="container">
+    <h1 th:text="${article.title}">Article Title</h1>
+    <div class="article-section">
+        <div class="article-title" th:text="${article.title}">Article Title</div>
+        <div class="article-content" th:text="${article.content}">Sample article content goes here...</div>
+        <div class="comment-meta">
+            <strong>Article ID:</strong> <span th:text="${article.id}">1</span>
+        </div>
+    </div>
+
+    <div class="hashtags">
+        <h3>Hashtags:</h3>
+        <ul>
+            <li th:each="hashtag : ${article.hashtags}">
+                <a th:href="@{/hashtags/{hashtag}(hashtag=${hashtag})}" th:text="'#' + ${hashtag}"></a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- 이전/다음 게시글 링크 및 댓글 섹션은 기존 코드 참고 -->
+</div>
+</body>
+</html>

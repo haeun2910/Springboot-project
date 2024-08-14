@@ -3,7 +3,9 @@
 //import jakarta.persistence.*;
 //import lombok.Data;
 //
+//import java.util.HashSet;
 //import java.util.List;
+//import java.util.Set;
 //
 //@Data
 //@Entity
@@ -11,14 +13,14 @@
 //    @Id
 //    @GeneratedValue(strategy = GenerationType.IDENTITY)
 //    private Long id;
-//    private String tagName;
+//    private String tag;
 //    @ManyToMany(mappedBy = "hashtags")
-//    private List<Article> articles;
+//    private Set<Article> articles = new HashSet<>();
 //
 //    public Hashtag() {
 //    }
 //    public Hashtag(String tagName) {
-//        this.tagName = tagName;
+//        this.tag = tag;
 //    }
 //
 //}

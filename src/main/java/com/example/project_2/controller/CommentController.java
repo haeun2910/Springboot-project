@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("boards/{boardId}/articles")
@@ -24,14 +25,23 @@ public class CommentController {
         this.boardService = boardService;
     }
     @GetMapping("/{articleId}/read")
-    public String getCommentsByArticle(@PathVariable Long articleId, Model model) {
+    public String getCommentsByArticle(
+            @PathVariable Long boardId,
+            @PathVariable Long articleId,
+            Model model) {
         Article article = articleService.getArticleById(articleId);
         if (article == null) {
             return "error";
         }
         List<Comment> comments = commentService.getCommentsByArticleId(articleId);
+        Optional<Article> previousArticle = articleService.getPreviousArticle(boardId, article.getCreatedDate());
+        Optional<Article> nextArticle = articleService.getNextArticle(boardId, article.getCreatedDate());
+
         model.addAttribute("comments", comments);
         model.addAttribute("article", article);
+        model.addAttribute("previousArticle", previousArticle.orElse(null));
+        model.addAttribute("nextArticle", nextArticle.orElse(null));
+
         return "comments/comments";
     }
     @GetMapping("{articleId}/comments/create")

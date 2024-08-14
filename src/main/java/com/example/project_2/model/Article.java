@@ -7,7 +7,9 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Data
 @Entity
@@ -23,9 +25,9 @@ public class Article {
     private String content;
     @Column
     private String password;
-//    @CreatedDate
-//    @Column
-//    private LocalDateTime createdDate;
+    @CreatedDate
+    @Column
+    private LocalDateTime createdDate;
 
     @ManyToOne
     @JoinColumn(name = "board_id")
@@ -35,10 +37,10 @@ public class Article {
 //    @ManyToMany
 //    @JoinTable(
 //            name = "article_hastag",
-//            joinColumns = @JoinColumn(name = "article-id"),
+//            joinColumns = @JoinColumn(name = "article_id"),
 //            inverseJoinColumns = @JoinColumn(name = "hashtag_id")
 //    )
-//    private List<Hashtag> hashtags;
+//    private Set<Hashtag> hashtags = new HashSet<>();
     public Article() {
     }
 

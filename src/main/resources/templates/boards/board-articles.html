@@ -3,40 +3,96 @@
 <head>
     <title>Articles</title>
     <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f0f2f5;
+        /* Basic Reset */
+        * {
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Body Styling */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #eef2f7;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
+            padding: 20px;
             color: #333;
         }
 
+        /* Container Styling */
         .container {
             background-color: #fff;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
-            max-width: 800px;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            max-width: 900px;
             width: 100%;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
         .container:hover {
             transform: translateY(-5px);
-            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
         }
 
+        /* Title Styling */
         h1 {
             text-align: center;
-            color: #444;
+            color: #333;
             margin-bottom: 30px;
-            font-size: 28px;
+            font-size: 32px;
+            font-weight: 700;
+            letter-spacing: 1px;
         }
 
+        /* Search Form Styling */
+        .search-form {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            padding: 10px;
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .search-form input[type="text"] {
+            flex-grow: 1;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+
+        .search-form select {
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-right: 10px;
+            background-color: #fff;
+        }
+
+        .search-form button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #3498db;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .search-form button:hover {
+            background-color: #2980b9;
+        }
+
+        /* List Styling */
         ul {
             list-style-type: none;
             padding: 0;
@@ -47,31 +103,41 @@
             background-color: #f9f9f9;
             margin-bottom: 15px;
             padding: 20px;
-            border-radius: 10px;
+            border-radius: 12px;
             transition: background-color 0.3s, box-shadow 0.3s ease;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            cursor: pointer;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
         }
 
         li:hover {
-            background-color: #e9e9e9;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+            background-color: #f1f1f1;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
         }
 
-        a.article-link {
+        .article-details {
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .article-link {
             text-decoration: none;
             color: #3498db;
             font-weight: 600;
-            font-size: 18px;
-            flex-grow: 1;
+            font-size: 20px;
             transition: color 0.3s ease;
+            margin-bottom: 5px;
         }
 
-        a.article-link:hover {
+        .article-link:hover {
             color: #2c8cd6;
+        }
+
+        .article-id {
+            font-size: 14px;
+            color: #888;
         }
 
         .action-buttons {
@@ -80,8 +146,8 @@
         }
 
         .action-button {
-            padding: 8px 12px;
-            border-radius: 5px;
+            padding: 10px 15px;
+            border-radius: 8px;
             text-decoration: none;
             color: #fff;
             font-weight: bold;
@@ -124,7 +190,7 @@
             background-color: #2ecc71;
             color: #fff;
             padding: 15px;
-            border-radius: 10px;
+            border-radius: 12px;
             text-decoration: none;
             font-weight: bold;
             font-size: 18px;
@@ -156,9 +222,22 @@
 <body>
 <div class="container">
     <h1 th:text="${board.name}">Board Name</h1>
+
+    <form th:action="@{/boards/{boardId}/search(boardId=${board.id})}" method="get" class="search-form">
+        <input type="text" name="query" placeholder="Search..." required />
+        <select name="criteria">
+            <option value="title">Title</option>
+            <option value="content">Content</option>
+        </select>
+        <button type="submit">Search</button>
+    </form>
+
     <ul>
         <li th:each="article : ${articles}">
-            <a th:text="${article.title}" class="article-link">Article Title</a>
+            <div class="article-details">
+                <a th:text="${article.title}" class="article-link">Article Title</a>
+                <span class="article-id">ID: <span th:text="${article.id}">1</span></span>
+            </div>
             <div class="action-buttons">
                 <a th:href="@{/boards/{boardId}/articles/{articleId}/read (articleId=${article.id}, boardId=${board.id})}" class="action-button read-button">Read</a>
                 <a th:href="@{/boards/{boardId}/articles/{articleId}/update (articleId=${article.id}, boardId=${board.id})}" class="action-button update-button">Update</a>
@@ -167,8 +246,8 @@
         </li>
     </ul>
 
-    <a href="/boards/articles/create" class="new-article-link">Write New Article</a>
-    <a href="/boards" class="back-link">Back to Boards</a>
+    <a th:href="@{/boards/articles/create(boardId=${board.id})}" class="new-article-link">Write New Article</a>
+    <a th:href="@{/boards}" class="back-link">Back to Boards</a>
 </div>
 
 </body>

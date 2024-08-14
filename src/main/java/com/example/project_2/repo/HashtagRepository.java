@@ -10,4 +10,5 @@
 //    Optional<Hashtag> findByTagName(String tagName);
 //    List<Hashtag> findByArticlesId(Long articleId);
 //
+//    Optional<Hashtag> findByTag(String tag);
 //}
