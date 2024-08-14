@@ -5,7 +5,7 @@
     <style>
         body {
             font-family: 'Roboto', sans-serif;
-            background-color: #f0f2f5;
+            background-color: #f4f6f9;
             margin: 0;
             padding: 0;
             display: flex;
@@ -17,28 +17,35 @@
         .container {
             background-color: #ffffff;
             padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
             max-width: 600px;
             width: 100%;
-            transition: transform 0.3s ease;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
         .container:hover {
-            transform: translateY(-5px);
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
         }
 
         h1 {
             color: #333;
             text-align: center;
             margin-bottom: 25px;
-            font-size: 24px;
+            font-size: 26px;
             font-weight: 700;
             letter-spacing: 1px;
         }
 
-        form div {
+        .error-message {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+            padding: 10px;
+            border-radius: 8px;
             margin-bottom: 20px;
+            text-align: center;
         }
 
         label {
@@ -57,6 +64,7 @@
             border-radius: 8px;
             box-sizing: border-box;
             font-size: 16px;
+            margin-bottom: 20px;
             transition: border-color 0.3s ease;
         }
 
@@ -65,17 +73,18 @@
         textarea:focus {
             border-color: #3498db;
             outline: none;
+            box-shadow: 0 0 8px rgba(52, 152, 219, 0.2);
         }
 
         textarea {
             resize: vertical;
-            min-height: 120px;
+            min-height: 150px;
         }
 
         button {
             background-color: #3498db;
             color: #fff;
-            padding: 12px 20px;
+            padding: 14px;
             border: none;
             border-radius: 8px;
             cursor: pointer;
@@ -87,13 +96,13 @@
 
         button:hover {
             background-color: #2980b9;
-            transform: translateY(-3px);
+            transform: translateY(-4px);
         }
 
         .back-link {
             display: block;
             text-align: center;
-            margin-top: 25px;
+            margin-top: 20px;
             color: #3498db;
             text-decoration: none;
             font-weight: 600;
@@ -109,6 +118,9 @@
 <body>
 <div class="container">
     <h1>Update Article</h1>
+    <div th:if="${error}" class="error-message">
+        <p th:text="${error}">Incorrect password, try again.</p>
+    </div>
 
     <form th:action="@{/boards/articles/{articleId}/update(articleId=${article.id})}" method="post">
         <div>
@@ -124,7 +136,7 @@
             <input type="password" id="password" name="password" required>
         </div>
         <div>
-            <button type="submit">Update</button>
+            <button type="submit">Update Article</button>
         </div>
     </form>
 

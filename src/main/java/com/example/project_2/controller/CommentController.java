@@ -85,8 +85,11 @@ public class CommentController {
             commentService.deleteComment(commentId, password);
             return "redirect:/boards/" + boardId + "/articles/" + articleId + "/read";
         } catch (RuntimeException e) {
-            model.addAttribute("error", e.getMessage());
-            return "comments/confirm-delete"; // Display an error page
+            model.addAttribute("error", "Incorrect password, please try again.");
+            model.addAttribute("commentId", commentId);
+            model.addAttribute("articleId", articleId);
+            model.addAttribute("boardId", boardId);
+            return "comments/confirm-delete"; // Return to the confirmation page with an error message
         }
     }
 }

@@ -88,7 +88,10 @@
 </head>
 <body>
 <div class="container">
-    <h1>Confirm Delete</h1>
+    <h1>Confirm Delete Comment</h1>
+    <div th:if="${error}" class="error-message">
+        <p th:text="${error}">Incorrect password, please try again.</p>
+    </div>
     <p>Please enter your password to confirm the deletion.</p>
     <form th:action="@{/boards/{boardId}/articles/{articleId}/comments/{commentId}/confirm-delete(boardId=${boardId}, articleId=${articleId}, commentId=${commentId})}" method="post">
         <input type="password" name="password" placeholder="Password" required>

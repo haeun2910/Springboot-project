@@ -4,58 +4,71 @@
     <title>Confirm Delete</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f2f5;
             margin: 0;
             padding: 0;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
+            color: #333;
         }
 
         .container {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
             max-width: 400px;
             width: 100%;
+            text-align: center;
         }
 
         h1 {
-            color: #333;
-            text-align: center;
+            color: #e74c3c;
+            font-size: 24px;
             margin-bottom: 20px;
         }
 
-        form div {
+        .error-message {
+            color: #e74c3c;
             margin-bottom: 15px;
+            font-weight: bold;
         }
 
-        label {
-            font-weight: bold;
-            display: block;
-            margin-bottom: 5px;
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
         input[type="password"] {
             width: 100%;
-            padding: 10px;
+            padding: 12px;
+            margin-bottom: 15px;
             border: 1px solid #ccc;
-            border-radius: 5px;
+            border-radius: 8px;
             box-sizing: border-box;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+
+        input[type="password"]:focus {
+            border-color: #3498db;
+            outline: none;
         }
 
         button {
             background-color: #e74c3c;
             color: #fff;
-            padding: 10px 15px;
+            padding: 12px;
             border: none;
-            border-radius: 5px;
+            border-radius: 8px;
             cursor: pointer;
             width: 100%;
             font-size: 16px;
+            transition: background-color 0.3s ease;
         }
 
         button:hover {
@@ -64,14 +77,26 @@
 
         .back-link {
             display: block;
-            text-align: center;
             margin-top: 20px;
             color: #3498db;
             text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s ease;
         }
 
         .back-link:hover {
+            color: #2980b9;
             text-decoration: underline;
+        }
+
+        .container::before {
+            content: "";
+            display: block;
+            width: 60px;
+            height: 4px;
+            background-color: #e74c3c;
+            margin: 0 auto 20px auto;
+            border-radius: 2px;
         }
     </style>
 </head>
@@ -79,10 +104,12 @@
 <div class="container">
     <h1>Confirm Delete</h1>
 
+    <div th:if="${error}" class="error-message">
+        <p th:text="${error}">Incorrect password, please try again.</p>
+    </div>
     <form th:action="@{/boards/articles/{articleId}/delete(articleId=${articleId})}" method="post">
         <div>
-            <label for="password">Enter your password:</label>
-            <input type="password" id="password" name="password" required>
+            <input type="password" id="password" name="password" placeholder="Enter your password" required>
         </div>
         <div>
             <button type="submit">Delete Article</button>
