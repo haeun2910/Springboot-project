@@ -1,3 +1,21 @@
+# 스택
+- Spring Boot 3.3.2
+- Spring Boot Data JPA
+- SQLite
+- Thymeleaf
+# 실행
+1. 본 Repository를 clone 받는다.
+2. Intellij IDEA를 이용해 clone 받은 폴더를 연다.
+3. CommunityApplication.java의 main을 실행한다.
+SQLite를 사용하며, 테스트 데이터를 넣어주기 위한 data.sql가 첨부되어 있기 때문에 실행하면 바로 기능을 확인할 수 있다.
+
+
+
+
+
+
+
+
 게시판 목록 보기: /boards/
 게시글 목록 보기: /boards/{boardId}/
 게시글 보기: /boards/{boardId}/articles/{articleId}/read
